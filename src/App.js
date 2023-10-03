@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { PhantomWalletName } from "@solana/wallet-adapter-wallets";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useEffect } from "react";
 
 function App() {
+  const wallet = useWallet();
+
+  useEffect(() => {
+    wallet.select(PhantomWalletName);
+  }, [wallet]);
+
+  async function connectWallet() {
+    try {
+      await wallet.connect();
+      console.log("walelt is connected");
+    } catch (error) {
+      console.log("walelt is not connected");
+      console.log("error ---", error);
+    }
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={connectWallet}>connect wallet</button>
     </div>
   );
 }
